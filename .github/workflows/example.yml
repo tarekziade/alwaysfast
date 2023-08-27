@@ -11,3 +11,5 @@ jobs:
       - name: Check perf
         id: check_perf
         uses: ./ # Uses an action in the root directory
+        with:
+          influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}

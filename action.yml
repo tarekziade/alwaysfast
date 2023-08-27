@@ -1,6 +1,5 @@
 name: "Always Fast"
 description: "Performance Regression for PRs"
-permissions: read-all
 
 inputs:
   main_branch:
@@ -35,7 +34,6 @@ runs:
   using: "docker"
   image: "Dockerfile"
   env:
-    influx_db_token: "${{ secrets.INFLUXDB_TOKEN }}"
     GIT_BRANCH: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
     MAIN_BRANCH: ${{ inputs.main_branch }}
     INFLUXDB_URL: ${{ inputs.influxdb_url }}
