@@ -39,3 +39,5 @@ runs:
     INFLUXDB_URL: ${{ inputs.influxdb_url }}
     INFLUXDB_ORG: ${{ inputs.influxdb_org }}
     INFLUXDB_BUCKET: ${{ inputs.influxdb_bucket }}
+    INFLUXDB_TOKEN: ${{ inputs.influxdb_token }}
+    GITHUB_TOKEN: ${{ inputs.github_token }}
