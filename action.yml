@@ -19,7 +19,7 @@ inputs:
     default: "benchmarks"
   influxdb_token:
     description: "InfluxDB Token"
-    default: "${{ secrets.INFLUXDB_TOKEN }}"
+    default: "TOKEN"
     required: false
   github_token:
     description: "Github Token"
