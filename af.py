@@ -103,6 +103,7 @@ if __name__ == "__main__":
         ("speed_3", float(random.randint(1, 10))),
     ]
 
+    print(f"Current branch is {current_branch}")
     if current_branch == main_branch:
         # metrics for main branch
         influx.send_measure("main", benchmark, dict(measure))
