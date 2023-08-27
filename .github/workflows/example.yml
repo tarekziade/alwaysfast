@@ -9,5 +9,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Check perf
-        id: check-perf
+        id: check_perf
         uses: ./ # Uses an action in the root directory

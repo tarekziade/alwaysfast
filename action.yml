@@ -39,7 +39,7 @@ runs:
         echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
       shell: bash
     - name: Check Performance Metrics
-      id: check-perf
+      id: check_perf
       env:
         INFLUXDB_TOKEN: ${{ secrets.INFLUXDB_TOKEN }}
         GITUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
