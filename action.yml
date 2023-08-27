@@ -1,9 +1,7 @@
-jobs:
-  bench:
-    name: "Always Fast"
-    description: "Performance Regression for PRs"
-    runs-on: ubuntu-latest
+name: Reusable deploy workflow
 
+on:
+  push:
     inputs:
       main_branch:
         description: "Main Branch"
@@ -31,6 +29,11 @@ jobs:
         description: "PR number"
         required: false
 
+jobs:
+  bench:
+    name: "Always Fast"
+    description: "Performance Regression for PRs"
+    runs-on: ubuntu-latest
     steps:
       - name: Install Python
         uses: actions/setup-python@v4
