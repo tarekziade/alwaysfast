@@ -1,0 +1,13 @@
+name: Test Action
+on: [push]
+
+jobs:
+  check=perf:
+    runs-on: ubuntu-latest
+    name: Check performances
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Check perf
+        id: check-perf
+        uses: ./ # Uses an action in the root directory
