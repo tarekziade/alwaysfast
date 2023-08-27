@@ -1,5 +1,10 @@
 name: Reusable deploy workflow
 
+env:
+  influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
+  github_token: ${{ github.token }}
+  pr_number: ${{ github.event.pull_request.number || github.event.number }}
+
 on:
   push:
     inputs:
@@ -43,10 +48,6 @@ jobs:
         run: pip install -r requirements.txt
         shell: bash
       - name: Get options
-        with:
-          influxdb_token: "${{ secrets.INFLUXDB_TOKEN }}"
-          github_token: "${{ github.token }}"
-          pr_number: "${{ github.event.number }}"
         run: |
           echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
           echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
