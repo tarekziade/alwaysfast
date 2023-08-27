@@ -17,6 +17,13 @@ inputs:
     description: "InfluxDB bucket"
     required: true
     default: "benchmarks"
+  influxdb_token:
+    description: "InfluxDB Token"
+  github_token:
+    description: "Github Token"
+  pr_number:
+    description: "PR number"
+
 runs:
   using: "composite"
   steps:
@@ -32,17 +39,20 @@ runs:
       run: pip install -r requirements.txt
       shell: bash
     - name: Get options
+      with:
+        influxdbtoken: ${{ secrets.INFLUXDB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        pr_number: ${{ github.event.number }}
       run: |
         echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
         echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
         echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
         echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
+        echo "INFLUXDB_TOKEN=${{ inputs.influxdb_token }}" >> $GITHUB_ENV
+        echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
+        echo "PR_NUMBER=${{ inputs.pr_number }}" >> $GITHUB_ENV
       shell: bash
     - name: Check Performance Metrics
       id: check_perf
-      env:
-        INFLUXDB_TOKEN: ${{ secrets.INFLUXDB_TOKEN }}
-        GITUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PR_NUMBER: ${{ github.event.number }}
       run: python af.py
       shell: bash
