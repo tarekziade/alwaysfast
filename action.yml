@@ -1,5 +1,7 @@
 name: "Always Fast"
 description: "Performance Regression for PRs"
+permissions: read-all
+
 inputs:
   main_branch:
     description: "Main Branch"
