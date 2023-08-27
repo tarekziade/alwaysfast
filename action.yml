@@ -24,7 +24,6 @@ inputs:
   influxdb_token:
     description: "InfluxDB Token"
     required: true
-    default: "${{ secrets.INFLUXDB_TOKEN }}"
   pr_number:
     description: "PR number"
     required: false
@@ -34,6 +33,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   env:
+    influx_db_token: "${{ secrets.INFLUXDB_TOKEN }}"
     GIT_BRANCH: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
     MAIN_BRANCH: ${{ inputs.main_branch }}
     INFLUXDB_URL: ${{ inputs.influxdb_url }}
