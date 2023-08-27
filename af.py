@@ -1,6 +1,6 @@
 import random
 import os
-import time
+import requests
 
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -62,24 +62,51 @@ class MetricsServer:
         return previous
 
 
-influx = MetricsServer(org="nuclia", bucket="nuclia", token=TOKEN)
+def comment_pr(comment, repository, pr_number, github_token):
+    url = f"https://api.github.com/repos/{repository}/issues/{pr_number}/comments"
+    headers = {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    data = {
+        "body": comment,
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 201:
+        print("Comment created successfully")
+    else:
+        print(f"Failed to create comment: {response.text}")
 
 
-for i in range(100):
+if __name__ == "__main__":
+    main_branch = os.getenv("MAIN_BRANCH", "main")
+    current_branch = os.getenv("GIT_BRANCH", "main")
+    benchmark = os.getenv("GIT_BRANCH", "speeds")
+    pr_number = os.getenv("PR_NUMBER")
+    repository = os.getenv("GITHUB_REPOSITORY")
+    gh_token = os.getenv("GITHUB_TOKEN")
+
+    influx = MetricsServer(
+        url=os.getenv("INFLUXDB_URL", "http://localhost:8086"),
+        org=os.getenv("INFLUXDB_ORG", "acme"),
+        bucket=os.getenv("INFLUXDB_BUCKET", "benchmarks"),
+        token=os.getenv("INFLUXDB_TOKEN", TOKEN),
+    )
     measure = [
         ("speed_1", float(random.randint(20, 24))),
         ("speed_2", float(random.randint(200, 240))),
         ("speed_3", float(random.randint(1, 10))),
     ]
-    influx.send_measure("main", "speeds", dict(measure))
-    # time.sleep(0.1)
 
+    if current_branch == main_branch:
+        # metrics for main branch
+        influx.send_measure("main", benchmark, dict(measure))
+    else:
+        res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
-for i in range(100):
-    measure = [
-        ("speed_1", float(random.randint(20, 24))),
-        ("speed_2", float(random.randint(200, 240))),
-        ("speed_3", float(random.randint(1, 10))),
-    ]
-    print(influx.send_measure("tarek/feature-1", "speeds", dict(measure), "main"))
-    time.sleep(0.1)
+        if pr_number is not None:
+            comment = "Comparison {str(res)}"
+            comment_pr(comment, repository, pr_number, gh_token)

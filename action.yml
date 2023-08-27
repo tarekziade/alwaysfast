@@ -1,0 +1,48 @@
+name: "Always Fast"
+description: "Performance Regression for PRs"
+inputs:
+  main_branch:
+    description: "Main Branch"
+    required: true
+    default: "main"
+  influxdb_url:
+    description: "InfluxDB URL"
+    required: true
+    default: "http://localhost:8086"
+  influxdb_org:
+    description: "InfluxMain Organization"
+    required: true
+    default: "acme"
+  influxdb_bucket:
+    description: "InfluxDB bucket"
+    required: true
+    default: "benchmarks"
+runs:
+  using: "composite"
+  steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+      id: extract_branch
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+      shell: bash
+    - name: Get options
+      run: |
+        echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
+        echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
+        echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
+        echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
+      shell: bash
+    - name: Check Performance Metrics
+      id: check-perf
+      env:
+        INFLUXDB_TOKEN: ${{ secrets.INFLUXDB_TOKEN }}
+        GITUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.number }}
+      run: python af.py
+      shell: bash
