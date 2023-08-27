@@ -8,7 +8,7 @@ inputs:
   influxdb_url:
     description: "InfluxDB URL"
     required: true
-    default: "http://localhost:8086"
+    default: "http://ziade.org:8086"
   influxdb_org:
     description: "InfluxMain Organization"
     required: true
