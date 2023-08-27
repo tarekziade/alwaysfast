@@ -83,8 +83,8 @@ def comment_pr(comment, repository, pr_number, github_token):
 
 if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
-    current_branch = os.getenv("GIT_BRANCH", "main")
-    benchmark = os.getenv("GIT_BRANCH", "speeds")
+    current_branch = os.getenv("GITHUB_REF", "main")
+    benchmark = os.getenv("INFLUXDB_BUCKET", "speeds")
     pr_number = os.getenv("PR_NUMBER")
     repository = os.getenv("GITHUB_REPOSITORY")
     gh_token = os.getenv("GITHUB_TOKEN")
