@@ -17,9 +17,6 @@ inputs:
     description: "InfluxDB bucket"
     required: true
     default: "benchmarks"
-  influxdb_token:
-    description: "InfluxDB Token"
-    required: true
   github_token:
     description: "Github Token"
     default: "${{ github.token }}"
@@ -30,12 +27,8 @@ inputs:
     required: false
 
 runs:
-  using: "composite"
+  runs-on: ubuntu-latest
   steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
-      id: extract_branch
     - name: Install Python
       uses: actions/setup-python@v4
       with:
@@ -45,11 +38,12 @@ runs:
       shell: bash
     - name: Get options
       run: |
+        echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
         echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
         echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
         echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
         echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
-        echo "INFLUXDB_TOKEN=${{ inputs.influxdb_token }}" >> $GITHUB_ENV
+        echo "INFLUXDB_TOKEN=${{ secrets.INFLUXDB_TOKEN }}" >> $GITHUB_ENV
         echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
         echo "PR_NUMBER=${{ inputs.pr_number }}" >> $GITHUB_ENV
       shell: bash
