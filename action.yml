@@ -19,10 +19,16 @@ inputs:
     default: "benchmarks"
   influxdb_token:
     description: "InfluxDB Token"
+    default: ${{ secrets.INFLUXDB_TOKEN }}
+    required: false
   github_token:
     description: "Github Token"
+    default: ${{ github.token }}
+    required: false
   pr_number:
     description: "PR number"
+    default: ${{ github.event.number }}
+    required: false
 
 runs:
   using: "composite"
@@ -39,10 +45,6 @@ runs:
       run: pip install -r requirements.txt
       shell: bash
     - name: Get options
-      with:
-        influxdbtoken: ${{ secrets.INFLUXDB_TOKEN }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        pr_number: ${{ github.event.number }}
       run: |
         echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
         echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
