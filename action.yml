@@ -22,14 +22,12 @@ jobs:
         default: "benchmarks"
       github_token:
         description: "Github Token"
-        default: "${{ github.token }}"
         required: false
       influxdb_token:
         description: "InfluxDB Token"
         required: true
       pr_number:
         description: "PR number"
-        default: "${{ github.event.number }}"
         required: false
 
     steps:
@@ -43,14 +41,14 @@ jobs:
       - name: Get options
         with:
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
+          github_token: ${{ github.token }}
+          pr_number: ${{ github.event.number }}
         run: |
           echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
           echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
           echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
           echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
           echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
-          echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
-          echo "PR_NUMBER=${{ inputs.pr_number }}" >> $GITHUB_ENV
         shell: bash
       - name: Check Performance Metrics
         run: python af.py
