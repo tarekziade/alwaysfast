@@ -2,7 +2,7 @@ name: Test Action
 on: [push]
 
 jobs:
-  check=perf:
+  check-perf:
     runs-on: ubuntu-latest
     name: Check performances
     steps:
