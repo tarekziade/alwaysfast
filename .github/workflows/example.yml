@@ -13,3 +13,5 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
+          org: tarek
+          bucket: benchmarks
