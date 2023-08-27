@@ -27,7 +27,7 @@ inputs:
     required: false
 
 runs:
-  runs-on: ubuntu-latest
+  on: ubuntu-latest
   steps:
     - name: Install Python
       uses: actions/setup-python@v4
