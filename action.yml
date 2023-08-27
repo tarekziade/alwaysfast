@@ -1,57 +1,57 @@
-name: "Always Fast"
-description: "Performance Regression for PRs"
-inputs:
-  main_branch:
-    description: "Main Branch"
-    required: true
-    default: "main"
-  influxdb_url:
-    description: "InfluxDB URL"
-    required: true
-    default: "http://ziade.org:8086"
-  influxdb_org:
-    description: "InfluxMain Organization"
-    required: true
-    default: "acme"
-  influxdb_bucket:
-    description: "InfluxDB bucket"
-    required: true
-    default: "benchmarks"
-  github_token:
-    description: "Github Token"
-    default: "${{ github.token }}"
-    required: false
-  influxdb_token:
-    description: "InfluxDB Token"
-    required: true
-  pr_number:
-    description: "PR number"
-    default: "${{ github.event.number }}"
-    required: false
+jobs:
+  bench:
+    name: "Always Fast"
+    description: "Performance Regression for PRs"
+    runs-on: ubuntu-latest
+    inputs:
+      main_branch:
+        description: "Main Branch"
+        required: true
+        default: "main"
+      influxdb_url:
+        description: "InfluxDB URL"
+        required: true
+        default: "http://ziade.org:8086"
+      influxdb_org:
+        description: "InfluxDB Organization"
+        required: true
+        default: "acme"
+      influxdb_bucket:
+        description: "InfluxDB bucket"
+        required: true
+        default: "benchmarks"
+      github_token:
+        description: "Github Token"
+        default: "${{ github.token }}"
+        required: false
+      influxdb_token:
+        description: "InfluxDB Token"
+        required: true
+      pr_number:
+        description: "PR number"
+        default: "${{ github.event.number }}"
+        required: false
 
-runs:
-  on: ubuntu-latest
-  steps:
-    - name: Install Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
-    - name: Install Dependencies
-      run: pip install -r requirements.txt
-      shell: bash
-    - name: Get options
-      with:
-        influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
-      run: |
-        echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
-        echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
-        echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
-        echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
-        echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
-        echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
-        echo "PR_NUMBER=${{ inputs.pr_number }}" >> $GITHUB_ENV
-      shell: bash
-    - name: Check Performance Metrics
-      id: check_perf
-      run: python af.py
-      shell: bash
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+        shell: bash
+      - name: Get options
+        with:
+          influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
+        run: |
+          echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+          echo "MAIN_BRANCH=${{ inputs.main_branch }}" >> $GITHUB_ENV
+          echo "INFLUXDB_URL=${{ inputs.influxdb_url }}" >> $GITHUB_ENV
+          echo "INFLUXDB_ORG=${{ inputs.influxdb_org }}" >> $GITHUB_ENV
+          echo "INFLUXDB_BUCKET=${{ inputs.influxdb_bucket }}" >> $GITHUB_ENV
+          echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
+          echo "PR_NUMBER=${{ inputs.pr_number }}" >> $GITHUB_ENV
+        shell: bash
+      - name: Check Performance Metrics
+        run: python af.py
+        shell: bash
