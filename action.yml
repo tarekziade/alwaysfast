@@ -1,10 +1,5 @@
 name: Reusable deploy workflow
 
-env:
-  INFLUXDB_TOKEN: "${{ secrets.INFLUXDB_TOKEN }}"
-  GITHUB_TOKEN: "${{ github.token }}"
-  PR_NUMBER: "${{ github.event.pull_request.number || github.event.number }}"
-
 on:
   push:
     inputs:
@@ -26,13 +21,16 @@ on:
         default: "benchmarks"
       github_token:
         description: "Github Token"
-        required: false
+        required: true
+        default: "${{ secrets.GITHUB_TOKEN }}"
       influxdb_token:
         description: "InfluxDB Token"
         required: true
+        default: "${{ secrets.INFLUXDB_TOKEN }}"
       pr_number:
         description: "PR number"
         required: false
+        default: "${{ github.event.pull_request.number || github.event.number }}"
 
 jobs:
   bench:
