@@ -89,6 +89,7 @@ if __name__ == "__main__":
     repository = os.getenv("GITHUB_REPOSITORY")
     gh_token = os.getenv("GITHUB_TOKEN")
 
+    print(f"Connecting to {os.getenv('INFLUXDB_URL')}")
     influx = MetricsServer(
         url=os.getenv("INFLUXDB_URL", "http://localhost:8086"),
         org=os.getenv("INFLUXDB_ORG", "acme"),
