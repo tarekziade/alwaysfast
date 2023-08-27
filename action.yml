@@ -1,9 +1,9 @@
 name: Reusable deploy workflow
 
 env:
-  influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
-  github_token: ${{ github.token }}
-  pr_number: ${{ github.event.pull_request.number || github.event.number }}
+  INFLUXDB_TOKEN: "${{ secrets.INFLUXDB_TOKEN }}"
+  GITHUB_TOKEN: "${{ github.token }}"
+  PR_NUMBER: "${{ github.event.pull_request.number || github.event.number }}"
 
 on:
   push:
