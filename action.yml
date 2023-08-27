@@ -19,15 +19,15 @@ inputs:
     default: "benchmarks"
   influxdb_token:
     description: "InfluxDB Token"
-    default: ${{ secrets.INFLUXDB_TOKEN }}
+    default: "${{ secrets.INFLUXDB_TOKEN }}"
     required: false
   github_token:
     description: "Github Token"
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
     required: false
   pr_number:
     description: "PR number"
-    default: ${{ github.event.number }}
+    default: "${{ github.event.number }}"
     required: false
 
 runs:
