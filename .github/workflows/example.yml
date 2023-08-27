@@ -12,6 +12,7 @@ jobs:
         id: check_perf
         uses: ./ # Uses an action in the root directory
         with:
+          influxdb_url: http://ziade.org:8086
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
-          org: tarek
-          bucket: benchmarks
+          influxdb_org: tarek
+          influxdb_bucket: benchmarks
