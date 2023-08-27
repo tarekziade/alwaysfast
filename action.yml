@@ -19,8 +19,7 @@ inputs:
     default: "benchmarks"
   influxdb_token:
     description: "InfluxDB Token"
-    default: "TOKEN"
-    required: false
+    required: true
   github_token:
     description: "Github Token"
     default: "${{ github.token }}"
