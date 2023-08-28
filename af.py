@@ -85,7 +85,6 @@ def comment_pr(comment, repository, pr_number, github_token):
 if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("GITHUB_REF", "main")
-    is_pr = current_branch.startswith("refs/pull")
     current_branch = current_branch.split("/")[-1].strip()
     benchmark = os.getenv("INFLUXDB_BUCKET", "speeds")
     pr_number = os.getenv("PR_NUMBER")
@@ -107,7 +106,9 @@ if __name__ == "__main__":
     ]
 
     print(f"Current branch is {current_branch}")
-    if not is_pr:
+    print(f"PR is {pr_number}")
+
+    if pr_number is None:
         # metrics for main branch
         influx.send_measure(current_branch, benchmark, dict(measure))
     else:
