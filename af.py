@@ -1,7 +1,8 @@
 import random
 import os
-import requests
+import textwrap
 
+import requests
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
@@ -195,12 +196,16 @@ if __name__ == "__main__":
 
             table = make_markdown_table(table, align="left")
 
-            comment = f"""
+            comment = textwrap.dedent(
+                f"""
             Benchmarks comparison to {main_branch} branch
 
             ```
             {table}
-            ````
+            ```
+
+            Happy hacking!
             """
+            )
 
             comment_pr(comment, repository, pr_number, gh_token)
