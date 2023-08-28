@@ -1,5 +1,10 @@
 name: "Always Fast"
 description: "Performance Regression for PRs"
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+  pull-requests: write
 
 inputs:
   main_branch:
