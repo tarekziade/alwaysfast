@@ -35,6 +35,9 @@ inputs:
   head_ref:
     description: "Head ref"
     required: true
+  pr_number:
+    description: "pr number"
+    default: ${{ github.event.issue.number }}
 
 runs:
   using: "docker"
@@ -49,3 +52,4 @@ runs:
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_COMMENT: ${{ inputs.github_comment }}
     HEAD_REF: ${{ inputs.head_ref }}
+    PR_NUMBER: ${{ inputs.pr_number }}
