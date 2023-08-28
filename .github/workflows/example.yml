@@ -7,7 +7,7 @@ on:
     branches:
       - main
 
-permission: write-all
+permissions: write-all
 
 jobs:
   check-perf:
