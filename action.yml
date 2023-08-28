@@ -25,14 +25,14 @@ inputs:
   influxdb_token:
     description: "InfluxDB Token"
     required: true
-  pr_number:
-    description: "PR number"
-    required: false
-    default: "${{ github.event.pull_request.number || github.event.number }}"
   github_ref:
     description: "Github Ref"
     required: true
     default: "${{ github.ref }}"
+  github_repository:
+    description: "Github repository"
+    required: true
+    default: "${{github.repository}}"
 
 runs:
   using: "docker"
@@ -45,3 +45,4 @@ runs:
     INFLUXDB_BUCKET: ${{ inputs.influxdb_bucket }}
     INFLUXDB_TOKEN: ${{ inputs.influxdb_token }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
+    GITHUB_REPOSITORY: ${{ inputs.github_repository }}
