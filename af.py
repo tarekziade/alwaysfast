@@ -63,6 +63,64 @@ class MetricsServer:
         return previous
 
 
+# https://gist.github.com/OsKaR31415/955b166f4a286ed427f667cb21d57bfd
+def make_markdown_table(array, align: str = None):
+    """
+    Args:
+        array: The array to make into a table. Mush be a rectangular array
+               (constant width and height).
+        align: The alignment of the cells : 'left', 'center' or 'right'.
+    """
+    # make sure every elements are strings
+    array = [[str(elt) for elt in line] for line in array]
+    # get the width of each column
+    widths = [max(len(line[i]) for line in array) for i in range(len(array[0]))]
+    # make every width at least 3 colmuns, because the separator needs it
+    widths = [max(w, 3) for w in widths]
+    # center text according to the widths
+    array = [[elt.center(w) for elt, w in zip(line, widths)] for line in array]
+
+    # separate the header and the body
+    array_head, *array_body = array
+
+    header = "| " + " | ".join(array_head) + " |"
+
+    # alignment of the cells
+    align = str(align).lower()  # make sure `align` is a lowercase string
+    if align == "none":
+        # we are just setting the position of the : in the table.
+        # here there are none
+        border_left = "| "
+        border_center = " | "
+        border_right = " |"
+    elif align == "center":
+        border_left = "|:"
+        border_center = ":|:"
+        border_right = ":|"
+    elif align == "left":
+        border_left = "|:"
+        border_center = " |:"
+        border_right = " |"
+    elif align == "right":
+        border_left = "| "
+        border_center = ":| "
+        border_right = ":|"
+    else:
+        raise ValueError("align must be 'left', 'right' or 'center'.")
+    separator = (
+        border_left + border_center.join(["-" * w for w in widths]) + border_right
+    )
+
+    # body of the table
+    body = [""] * len(array)  # empty string list that we fill after
+    for idx, line in enumerate(array):
+        # for each line, change the body at the correct index
+        body[idx] = "| " + " | ".join(line) + " |"
+    body = "\n".join(body)
+
+    return header + "\n" + separator + "\n" + body
+
+
 def comment_pr(comment, repository, pr_number, github_token):
     url = f"https://api.github.com/repos/{repository}/issues/{pr_number}/comments"
     print(f"Calling `{url}`")
@@ -121,5 +179,19 @@ if __name__ == "__main__":
         res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
         if pr_number is not None:
-            comment = f"Comparison {str(res)}"
+            table = [["Test", "PR benchmark", "Main benchmark", "%"]]
+
+            for test, (pr, main) in res.items():
+                table.append([test, pr, main])
+
+            table = make_markdown_table(table, align="left")
+
+            comment = f"""
+            Benchmarks comparison to {main_branch} branch
+
+            ```
+            {table}
+            ````
+            """
+
             comment_pr(comment, repository, pr_number, gh_token)
