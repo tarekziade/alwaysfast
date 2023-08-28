@@ -2,4 +2,4 @@
 
 Github Action that collects metrics in InfluxDB for performance regression.
 
-Trigger word: /bench
+To run the action, add a comment with the trigger word: `/bench`
