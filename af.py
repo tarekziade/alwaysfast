@@ -164,11 +164,11 @@ if __name__ == "__main__":
 
         if pr_number is not None:
             headers = ["Test", "PR benchmark", "Main benchmark", "%"]
-
+            lines = []
             for test, (pr, main) in res.items():
-                table.append([test, pr, main, get_change(pr, main)])
+                lines.append([test, pr, main, get_change(pr, main)])
 
-            table = markdown_table(table, headers)
+            table = markdown_table(lines, headers)
 
             comment = textwrap.dedent(
                 f"""\
