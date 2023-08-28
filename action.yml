@@ -35,7 +35,7 @@ inputs:
   pr_number:
     description: "Github PR number"
     required: true
-    default: "${{ github.event.issue.number }}"
+    default: "XXX"
 
 runs:
   using: "docker"
