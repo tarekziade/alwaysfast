@@ -120,7 +120,7 @@ def get_change(current, previous):
     if current == previous:
         return "0.0"
     try:
-        val = (abs(current - previous) / previous) * 100.0 - 100.0
+        val = 100.0 - (abs(current - previous) / previous) * 100.0
         return f"{val:.2f}"
     except ZeroDivisionError:
         return "0.0"
