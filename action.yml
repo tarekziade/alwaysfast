@@ -32,6 +32,10 @@ inputs:
   github_comment:
     description: "Github comment"
     default: "${{ github.event.comment.body || github.event.pull_request.body || 'empty'}}"
+  pr_number:
+    description: "Github PR number"
+    required: true
+    default: "${{ github.event.issue.number }}"
 
 runs:
   using: "docker"
@@ -45,3 +49,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_COMMENT: ${{ inputs.github_comment }}
+    PR_NUMBER: ${{ inputs.pr_number }}
