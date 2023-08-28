@@ -26,6 +26,7 @@ jobs:
         id: check_perf
         uses: ./ # Uses an action in the root directory
         with:
+          github_ref: ${{ github.ref }}
           influxdb_url: http://ziade.org:8086
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
           influxdb_org: tarek
