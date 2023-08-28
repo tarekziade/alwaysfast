@@ -17,8 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Check performances
     steps:
-      - name: Checkout
+      - name: Checkout in PR
         uses: actions/checkout@v2
+        if: github.event_name == 'pull_request' || github.event_name == 'issue_comment'
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
+      - name: Checkout in main
+        uses: actions/checkout@v2
+        if: github.event_name != 'pull_request' && github.event_name != 'issue_comment'
       - name: Check perf
         id: check_perf
         uses: ./ # Uses an action in the root directory
