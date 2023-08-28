@@ -121,5 +121,5 @@ if __name__ == "__main__":
         res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
         if pr_number is not None:
-            comment = "Comparison {str(res)}"
+            comment = f"Comparison {str(res)}"
             comment_pr(comment, repository, pr_number, gh_token)
