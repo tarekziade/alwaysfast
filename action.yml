@@ -25,10 +25,6 @@ inputs:
   influxdb_token:
     description: "InfluxDB Token"
     required: true
-  pr_number:
-    description: "PR number"
-    required: true
-    default: "${{ github.event.pull_request.number || github.event.number }}"
   github_ref:
     description: "Github Ref"
     required: true
@@ -49,5 +45,4 @@ runs:
     INFLUXDB_BUCKET: ${{ inputs.influxdb_bucket }}
     INFLUXDB_TOKEN: ${{ inputs.influxdb_token }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
-    PR_NUMBER: ${{ inputs.pr_number }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
