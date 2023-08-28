@@ -14,20 +14,21 @@ permissions: write-all
 
 jobs:
   check-perf:
-    if: contains(github.event.comment.body, '/bench')
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/ench')
     runs-on: ubuntu-latest
     name: Check performances
-    env:
-      GITHUB_REF: ${{ github.ref }}
     steps:
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
       - name: Check perf
         uses: ./ # Uses an action in the root directory
         with:
-          pr_number: ${{ github.event.issue.number }}
+          github_ref: ${{ steps.comment-branch.outputs.head_ref }}
           influxdb_url: http://ziade.org:8086
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
           influxdb_org: tarek

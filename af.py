@@ -131,9 +131,14 @@ if __name__ == "__main__":
     current_branch = os.getenv("GITHUB_REF", "main")
     print(f"GITHUB_REF IS {current_branch}")
 
-    print(f"PR_NUMBER IS {os.getenv('GITHUB_PR_NUMBER')}")
+    if current_branch.startswith("refs/pull"):
+        pr_number = current_branch.split("/")[2]
+    elif current_branch.startswith("refs/remotes/pull"):
+        pr_number = current_branch.split("/")[3]
+    else:
+        pr_number = None
 
-    pr_number = os.getenv("GITHUB_PR_NUMBER")
+    print(f"PR_NUMBER IS {pr_number}")
 
     current_branch = current_branch.split("/")[-1].strip()
     benchmark = os.getenv("INFLUXDB_BUCKET", "speeds")
