@@ -130,7 +130,7 @@ if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("HEAD_REF", "main")
     print(f"HEAD_REF IS {current_branch}")
-    pr_number = os.getenv("PR_NUMBER")
+    pr_number = os.getenv("PR_NUMBER", "")
 
     print(f"PR_NUMBER IS {pr_number}")
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     print(f"PR is `{pr_number}`")
     print(f"comment is `{trigger}`")
 
-    if pr_number is None:
+    if pr_number == "":
         # metrics for main branch
         influx.send_measure(current_branch, benchmark, dict(measure))
     else:
