@@ -142,6 +142,15 @@ def comment_pr(comment, repository, pr_number, github_token):
         print(f"Failed to create comment: {response.text}")
 
 
+def get_change(current, previous):
+    if current == previous:
+        return 100.0
+    try:
+        return (abs(current - previous) / previous) * 100.0
+    except ZeroDivisionError:
+        return 0
+
+
 if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("GITHUB_REF", "main")
@@ -182,7 +191,7 @@ if __name__ == "__main__":
             table = [["Test", "PR benchmark", "Main benchmark", "%"]]
 
             for test, (pr, main) in res.items():
-                table.append([test, pr, main])
+                table.append([test, pr, main, get_change(pr, main)])
 
             table = make_markdown_table(table, align="left")
 
