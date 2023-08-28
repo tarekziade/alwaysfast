@@ -25,10 +25,6 @@ inputs:
   influxdb_token:
     description: "InfluxDB Token"
     required: true
-  github_ref:
-    description: "Github Ref"
-    required: true
-    default: "${{ github.ref }}"
   github_repository:
     description: "Github repository"
     required: true
@@ -36,12 +32,14 @@ inputs:
   github_comment:
     description: "Github comment"
     default: "${{ github.event.comment.body || github.event.pull_request.body || 'empty'}}"
+  github_ref:
+    description: "Github REF"
+    required: true
 
 runs:
   using: "docker"
   image: "Dockerfile"
   env:
-    GITHUB_REF: ${{ inputs.github_ref }}
     MAIN_BRANCH: ${{ inputs.main_branch }}
     INFLUXDB_URL: ${{ inputs.influxdb_url }}
     INFLUXDB_ORG: ${{ inputs.influxdb_org }}
@@ -50,3 +48,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_COMMENT: ${{ inputs.github_comment }}
+    GITHUB_REF: ${{ inputs.github_ref }}

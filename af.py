@@ -133,8 +133,13 @@ if __name__ == "__main__":
 
     if current_branch.startswith("refs/pull"):
         pr_number = current_branch.split("/")[2]
+    elif current_branch.startswith("refs/remotes/pull"):
+        pr_number = current_branch.split("/")[3]
     else:
         pr_number = None
+
+    print(f"PR_NUMBER IS {pr_number}")
+
     current_branch = current_branch.split("/")[-1].strip()
     benchmark = os.getenv("INFLUXDB_BUCKET", "speeds")
     repository = os.getenv("GITHUB_REPOSITORY")
