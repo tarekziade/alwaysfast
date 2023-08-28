@@ -128,8 +128,8 @@ def get_change(current, previous):
 
 if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
-    current_branch = os.getenv("GITHUB_REF", "main")
-    print(f"GITHUB_REF IS {current_branch}")
+    current_branch = os.getenv("HEAD_REF", "main")
+    print(f"HEAD_REF IS {current_branch}")
 
     if current_branch.startswith("refs/pull"):
         pr_number = current_branch.split("/")[2]

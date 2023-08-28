@@ -32,8 +32,8 @@ inputs:
   github_comment:
     description: "Github comment"
     default: "${{ github.event.comment.body || github.event.pull_request.body || 'empty'}}"
-  github_ref:
-    description: "Github REF"
+  head_ref:
+    description: "Head ref"
     required: true
 
 runs:
@@ -48,4 +48,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_COMMENT: ${{ inputs.github_comment }}
-    GITHUB_REF: ${{ inputs.github_ref }}
+    HEAD_REF: ${{ inputs.head_ref }}
