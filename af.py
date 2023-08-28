@@ -66,7 +66,7 @@ class MetricsServer:
 
 def markdown_table(data, headers):
     # Find maximal length of all elements in list
-    n = max(len(x) for l in data for x in l)
+    n = max(len(str(x)) for l in data for x in l)
     # Print the rows
     headerLength = len(headers)
 
@@ -88,8 +88,8 @@ def markdown_table(data, headers):
     for row in data:
         line = ""
         for x in row:
-            hn = n - len(x)
-            line += "|" + " " * hn + x
+            hn = n - len(str(x))
+            line += "|" + " " * hn + str(x)
         line += "|"
         lines.append(line)
 
