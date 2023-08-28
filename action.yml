@@ -27,7 +27,7 @@ inputs:
     required: true
   pr_number:
     description: "PR number"
-    required: false
+    required: true
     default: "${{ github.event.pull_request.number || github.event.number }}"
   github_ref:
     description: "Github Ref"

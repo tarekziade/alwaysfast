@@ -65,6 +65,8 @@ class MetricsServer:
 
 def comment_pr(comment, repository, pr_number, github_token):
     url = f"https://api.github.com/repos/{repository}/issues/{pr_number}/comments"
+    print(f"Calling `{url}`")
+
     headers = {
         "Authorization": f"Bearer {github_token}",
         "Accept": "application/vnd.github.v3+json",
@@ -91,8 +93,7 @@ if __name__ == "__main__":
     repository = os.getenv("GITHUB_REPOSITORY")
     gh_token = os.getenv("GITHUB_TOKEN")
 
-    print(f"Connecting to {os.getenv('INFLUXDB_URL')}")
-    print(f"token starts with {os.getenv('INFLUXDB_TOKEN')[:10]}")
+    print(f"Connecting to `{os.getenv('INFLUXDB_URL')}`")
     influx = MetricsServer(
         url=os.getenv("INFLUXDB_URL", "http://localhost:8086"),
         org=os.getenv("INFLUXDB_ORG", "acme"),
@@ -105,8 +106,8 @@ if __name__ == "__main__":
         ("speed_3", float(random.randint(1, 10))),
     ]
 
-    print(f"Current branch is {current_branch}")
-    print(f"PR is {pr_number}")
+    print(f"Current branch is `{current_branch}`")
+    print(f"PR is `{pr_number}`")
 
     if pr_number is None:
         # metrics for main branch
