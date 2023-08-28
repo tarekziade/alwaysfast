@@ -22,9 +22,9 @@ class MetricsServer:
         self.org = org
         self.client = InfluxDBClient(url=self.url, org=self.org, token=self.token)
 
-    def mean(self, bucket, branch, benchmark, field):
+    def mean(self, branch, benchmark, field):
         query = f"""
-        from(bucket:"{bucket}")
+        from(bucket:"{self.bucket}")
         |> range(start: -30d, stop: now())
         |> filter(fn: (r) => r["branch"] == "{branch}")
         |> filter(fn: (r) => r["_measurement"] == "{benchmark}")
@@ -33,6 +33,7 @@ class MetricsServer:
         |> limit(n:10)
         |> mean(column: "_value")
         """
+        print(query)
         query_api = self.client.query_api()
         previous = query_api.query(query)
         if len(previous) == 0:
@@ -56,7 +57,7 @@ class MetricsServer:
 
             previous[field] = (
                 value,
-                self.mean(self.bucket, check_previous, benchmark, field),
+                self.mean(check_previous, benchmark, field),
             )
 
         return previous

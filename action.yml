@@ -45,3 +45,4 @@ runs:
     INFLUXDB_BUCKET: ${{ inputs.influxdb_bucket }}
     INFLUXDB_TOKEN: ${{ inputs.influxdb_token }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
+    PR_NUMBER: ${{ inputs.pr_number }}
