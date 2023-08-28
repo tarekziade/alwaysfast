@@ -1,6 +1,5 @@
 import random
 import os
-import textwrap
 
 import requests
 from influxdb_client import InfluxDBClient, Point
@@ -119,11 +118,12 @@ def comment_pr(comment, repository, pr_number, github_token):
 
 def get_change(current, previous):
     if current == previous:
-        return 100.0
+        return "0.0"
     try:
-        return (abs(current - previous) / previous) * 100.0
+        val = (abs(current - previous) / previous) * 100.0 - 100.0
+        return f"{val:.2f}"
     except ZeroDivisionError:
-        return 0
+        return "0.0"
 
 
 if __name__ == "__main__":
@@ -170,16 +170,14 @@ if __name__ == "__main__":
 
             table = markdown_table(lines, headers)
 
-            comment = textwrap.dedent(
-                f"""\
+            comment = f"""\
             Benchmarks comparison to {main_branch} branch
 
-            ```
             {table}
-            ```
 
             Happy hacking!
             """
-            )
+
+            comment = "\n".join([l.lstrip() for l in comment.split("\n")])
 
             comment_pr(comment, repository, pr_number, gh_token)
