@@ -162,7 +162,9 @@ if __name__ == "__main__":
     else:
         res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
-        if pr_number is not None:
+        trigger = os.getenv("GITHUB_COMMENT", "").strip()
+
+        if pr_number is not None and trigger in ("benchmark"):
             headers = ["Test", "PR benchmark", "Main benchmark", "%"]
             lines = []
             for test, (pr, main) in res.items():
