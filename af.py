@@ -152,17 +152,17 @@ if __name__ == "__main__":
         ("speed_2", float(random.randint(200, 240))),
         ("speed_3", float(random.randint(1, 10))),
     ]
+    trigger = os.getenv("GITHUB_COMMENT", "").strip().lower()
 
     print(f"Current branch is `{current_branch}`")
     print(f"PR is `{pr_number}`")
+    print(f"comment is `{trigger}`")
 
     if pr_number is None:
         # metrics for main branch
         influx.send_measure(current_branch, benchmark, dict(measure))
     else:
         res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
-
-        trigger = os.getenv("GITHUB_COMMENT", "").strip().lower()
 
         if pr_number is not None and trigger in ("/bench",):
             headers = ["Test", "PR benchmark", "Main benchmark", "%"]
