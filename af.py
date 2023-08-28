@@ -44,6 +44,7 @@ class MetricsServer:
         return previous[0].records[0].values["_value"]
 
     def send_measure(self, branch, benchmark, measure, check_previous=None):
+        print(f"Sending metrics to {self.url}")
         write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
         previous = {}
