@@ -17,6 +17,8 @@ jobs:
     if: contains(github.event.comment.body, '/bench')
     runs-on: ubuntu-latest
     name: Check performances
+    env:
+      GITHUB_REF: ${{ github.ref }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,7 +27,6 @@ jobs:
       - name: Check perf
         uses: ./ # Uses an action in the root directory
         with:
-          github_ref: ${{ github.ref }}
           influxdb_url: http://ziade.org:8086
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
           influxdb_org: tarek
