@@ -9,10 +9,24 @@ on:
 permissions: write-all
 
 jobs:
-  check-perf:
-    if: github.event.pull_request.merged == true || (github.event.issue.pull_request && contains(github.event.comment.body, '/bench'))
+  check-perf-main:
+    if: github.event_name == 'push'
+    name: Record performance on main
     runs-on: ubuntu-latest
-    name: Check performances
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Check perf
+        uses: ./ # Uses an action in the root directory
+        with:
+          influxdb_url: http://ziade.org:8086
+          influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
+          influxdb_org: tarek
+          influxdb_bucket: benchmarks
+  check-perf-pr:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/bench')
+    runs-on: ubuntu-latest
+    name: Check performance on the PR
     steps:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
