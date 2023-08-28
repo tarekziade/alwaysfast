@@ -33,6 +33,10 @@ inputs:
     description: "Github Ref"
     required: true
     default: "${{ github.ref }}"
+  github_repository:
+    description: "Github repository"
+    required: true
+    default: "${{github.repository}}"
 
 runs:
   using: "docker"
@@ -46,3 +50,4 @@ runs:
     INFLUXDB_TOKEN: ${{ inputs.influxdb_token }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
     PR_NUMBER: ${{ inputs.pr_number }}
+    GITHUB_REPOSITORY: ${{ inputs.github_repository }}
