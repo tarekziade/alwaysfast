@@ -7,6 +7,8 @@ on:
     branches:
       - main
 
+permission: write-all
+
 jobs:
   check-perf:
     runs-on: ubuntu-latest
