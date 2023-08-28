@@ -64,62 +64,36 @@ class MetricsServer:
         return previous
 
 
-# https://gist.github.com/OsKaR31415/955b166f4a286ed427f667cb21d57bfd
-def make_markdown_table(array, align: str = None):
-    """
-    Args:
-        array: The array to make into a table. Mush be a rectangular array
-               (constant width and height).
-        align: The alignment of the cells : 'left', 'center' or 'right'.
-    """
-    # make sure every elements are strings
-    array = [[str(elt) for elt in line] for line in array]
-    # get the width of each column
-    widths = [max(len(line[i]) for line in array) for i in range(len(array[0]))]
-    # make every width at least 3 colmuns, because the separator needs it
-    widths = [max(w, 3) for w in widths]
-    # center text according to the widths
-    array = [[elt.center(w) for elt, w in zip(line, widths)] for line in array]
+def markdown_table(data, headers):
+    # Find maximal length of all elements in list
+    n = max(len(x) for l in data for x in l)
+    # Print the rows
+    headerLength = len(headers)
 
-    # separate the header and the body
-    array_head, *array_body = array
+    lines = []
 
-    header = "| " + " | ".join(array_head) + " |"
+    header_line = ""
+    for i in range(len(headers)):
+        hn = n - len(headers[i])
+        header_line += "|" + " " * hn + f"{headers[i]}"
+        if i == headerLength - 1:
+            header_line += "|"
+    lines.append(header_line)
 
-    # alignment of the cells
-    align = str(align).lower()  # make sure `align` is a lowercase string
-    if align == "none":
-        # we are just setting the position of the : in the table.
-        # here there are none
-        border_left = "| "
-        border_center = " | "
-        border_right = " |"
-    elif align == "center":
-        border_left = "|:"
-        border_center = ":|:"
-        border_right = ":|"
-    elif align == "left":
-        border_left = "|:"
-        border_center = " |:"
-        border_right = " |"
-    elif align == "right":
-        border_left = "| "
-        border_center = ":| "
-        border_right = ":|"
-    else:
-        raise ValueError("align must be 'left', 'right' or 'center'.")
-    separator = (
-        border_left + border_center.join(["-" * w for w in widths]) + border_right
-    )
+    sep_line = "|"
+    for i in range(len(headers)):
+        sep_line += "-" * n + "|"
+    lines.append(sep_line)
 
-    # body of the table
-    body = [""] * len(array)  # empty string list that we fill after
-    for idx, line in enumerate(array):
-        # for each line, change the body at the correct index
-        body[idx] = "| " + " | ".join(line) + " |"
-    body = "\n".join(body)
+    for row in data:
+        line = ""
+        for x in row:
+            hn = n - len(x)
+            line += "|" + " " * hn + x
+        line += "|"
+        lines.append(line)
 
-    return header + "\n" + separator + "\n" + body
+    return "\n".join(lines)
 
 
 def comment_pr(comment, repository, pr_number, github_token):
@@ -189,15 +163,15 @@ if __name__ == "__main__":
         res = influx.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
         if pr_number is not None:
-            table = [["Test", "PR benchmark", "Main benchmark", "%"]]
+            headers = ["Test", "PR benchmark", "Main benchmark", "%"]
 
             for test, (pr, main) in res.items():
                 table.append([test, pr, main, get_change(pr, main)])
 
-            table = make_markdown_table(table, align="left")
+            table = markdown_table(table, headers)
 
             comment = textwrap.dedent(
-                f"""
+                f"""\
             Benchmarks comparison to {main_branch} branch
 
             ```
