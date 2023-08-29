@@ -15,7 +15,35 @@ Example of comments in the PR:
 
 ![PR](example.png)
 
-Example of usage:
+## How to use
+
+The first step is to generate metrics with your favorite tool.
+The results need to be stored in a JSON file. The structure
+is dead simple: it has to be a list of elements where each element
+is a field name and a numerical value.
+
+Example:
+
+```json
+[
+  ["speed_1", 24.0],
+  ["speed_2", 207.0],
+  ["speed_3", 5.0]
+]
+```
+
+How you generated that value is up to you. The fanciest
+benchmarks will run cycles of 25 runs on bare metal to avoid
+noise and false positives, but a simple script that generates
+one value can already go a long way.
+
+Once you have that script in your repo, we can plug it into
+a Github Action step right before we run `alwaysfast`.
+
+The bench will run on main and every PR, allowing you
+to track performance regressions (or improvements!)
+
+Example of action file:
 
 ```yaml
 name: Test Action
