@@ -10,6 +10,10 @@ inputs:
     description: "Benchmark name"
     required: true
     default: "speeds"
+  metrics_file:
+    description: "Path to metrics file"
+    default: "metrics.json"
+    required: true
   backend:
     description: "Backend type"
     required: true
@@ -59,3 +63,4 @@ runs:
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     HEAD_REF: ${{ inputs.head_ref }}
     PR_NUMBER: ${{ inputs.pr_number }}
+    METRICS_FILE: ${{ inputs.metrics_file }}

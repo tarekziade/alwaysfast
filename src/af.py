@@ -1,6 +1,5 @@
-import random
 import os
-
+import json
 import requests
 
 
@@ -63,6 +62,7 @@ def get_change(current, previous):
 
 
 if __name__ == "__main__":
+    metrics_file = os.getenv("METRICS_FILE", "metrics.json")
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("HEAD_REF", "main")
     pr_number = os.getenv("PR_NUMBER", "")
@@ -87,11 +87,9 @@ if __name__ == "__main__":
     gh_token = os.getenv("GITHUB_TOKEN")
 
     print(f"Connecting to `{os.getenv('INFLUXDB_URL')}`")
-    measure = [
-        ("speed_1", float(random.randint(20, 24))),
-        ("speed_2", float(random.randint(200, 240))),
-        ("speed_3", float(random.randint(1, 10))),
-    ]
+
+    with open(metrics_file) as f:
+        measure = [(k, v) for k, v in json.loads(f.read()).items()]
 
     if pr_number == "":
         # metrics for main branch
