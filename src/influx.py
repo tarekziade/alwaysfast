@@ -32,14 +32,19 @@ class InfluxDBServer:
 
         return previous[0].records[0].values["_value"]
 
-    def send_measure(self, branch, benchmark, measure, check_previous=None):
+    def send_measure(self, branch, benchmark, measure, sha, check_previous=None):
         print(f"Sending metrics to {self.url}")
         write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
         previous = {}
 
         for field, value in measure.items():
-            point = Point(benchmark).tag("branch", branch).field(field, value)
+            point = (
+                Point(benchmark)
+                .tag("branch", branch)
+                .tag("sha", sha)
+                .field(field, value)
+            )
             write_api.write(bucket=self.bucket, record=point)
 
             if check_previous is None:

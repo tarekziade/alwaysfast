@@ -41,7 +41,7 @@ class PrometheusServer:
         values = [float(r["value"][-1]) for r in res["data"]["result"]]
         return statistics.mean(values)
 
-    def send_measure(self, branch, benchmark, measure, check_previous=None):
+    def send_measure(self, branch, benchmark, measure, sha, check_previous=None):
         print(f"Sending metrics to {self.push_url}")
         measure_timestamp = time.time()
         previous = {}
@@ -49,10 +49,12 @@ class PrometheusServer:
         name = self.get_measure_name(branch, benchmark)
 
         registry = CollectorRegistry()
-        g = Gauge(name, name, ["name", "branch", "when"], registry=registry)
+        g = Gauge(name, name, ["name", "branch", "sha", "when"], registry=registry)
 
         for field, value in measure.items():
-            g.labels(name=field, branch=branch, when=measure_timestamp).set(value)
+            g.labels(name=field, branch=branch, sha=sha, when=measure_timestamp).set(
+                value
+            )
             if check_previous is None:
                 continue
 
@@ -91,9 +93,9 @@ if __name__ == "__main__":
 
     def add_more(i=100):
         for _ in range(i):
-            prom.send_measure("main", "speed", measure())
+            prom.send_measure("main", "speed", "sha", measure())
 
         for _ in range(i):
-            print(prom.send_measure("tarek/feature", "speed", measure(), "main"))
+            print(prom.send_measure("tarek/feature", "speed", "sha", measure(), "main"))
 
     add_more(10)

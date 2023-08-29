@@ -66,6 +66,7 @@ if __name__ == "__main__":
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("HEAD_REF", "main")
     pr_number = os.getenv("PR_NUMBER", "")
+    sha = os.getenv("GITHUB_SHA")
 
     if pr_number != "":
         print(f"Working on PR {pr_number}")
@@ -93,9 +94,11 @@ if __name__ == "__main__":
 
     if pr_number == "":
         # metrics for main branch
-        server.send_measure(main_branch, benchmark, dict(measure))
+        server.send_measure(main_branch, benchmark, sha, dict(measure))
     else:
-        res = server.send_measure(current_branch, benchmark, dict(measure), main_branch)
+        res = server.send_measure(
+            current_branch, benchmark, sha, dict(measure), main_branch
+        )
 
         headers = ["Test", "PR benchmark", "Main benchmark", "%"]
         lines = []

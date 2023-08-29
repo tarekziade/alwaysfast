@@ -47,6 +47,9 @@ inputs:
   pr_number:
     description: "pr number"
     default: ${{ github.event.issue.number }}
+  github_sha:
+    required: true
+    default: ${{ github.sha }}
 
 runs:
   using: "docker"
@@ -64,3 +67,4 @@ runs:
     HEAD_REF: ${{ inputs.head_ref }}
     PR_NUMBER: ${{ inputs.pr_number }}
     METRICS_FILE: ${{ inputs.metrics_file }}
+    GITHUB_SHA: ${{ inputs.github_sha }}
