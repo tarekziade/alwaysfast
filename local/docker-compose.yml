@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+  prom-pushgateway:
+    container_name: prom-pushgateway
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    ports:
+      - 9090:9090
+  tester:
+    container_name: ubuntu
+    image: ubuntu
+    restart: on-failure
+    command: ["sleep", "infinity"]
+
+networks:
+  default:
+    external:
+      name: prom
