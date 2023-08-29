@@ -89,7 +89,7 @@ if __name__ == "__main__":
     print(f"Connecting to `{os.getenv('INFLUXDB_URL')}`")
 
     with open(metrics_file) as f:
-        measure = [(k, v) for k, v in json.loads(f.read()).items()]
+        measure = json.loads(f.read())
 
     if pr_number == "":
         # metrics for main branch
