@@ -7,5 +7,5 @@ measure = [
     ("speed_3", float(random.randint(1, 10))),
 ]
 
-with open("metrics.json") as f:
+with open("metrics.json", "w") as f:
     f.write(json.dumps(measure))
