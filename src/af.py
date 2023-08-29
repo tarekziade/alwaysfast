@@ -58,7 +58,7 @@ def get_change(current, previous):
     try:
         val = (current - previous) / previous * 100.0
         return f"{val:.2f}"
-    except ZeroDivisionError:
+    except (ZeroDivisionError, TypeError):
         return "?"
 
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     if pr_number == "":
         # metrics for main branch
-        server.send_measure(current_branch, benchmark, dict(measure))
+        server.send_measure(main_branch, benchmark, dict(measure))
     else:
         res = server.send_measure(current_branch, benchmark, dict(measure), main_branch)
 
