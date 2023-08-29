@@ -13,6 +13,9 @@ scrape_configs:
         labels:
           service: "prom-pushgateway"
 
+basic_auth_users:
+  root: $2b$12$VIe7vt1Dwg5qZFFJwb7jteGVkiGb9dOkhR8hNPMmGUhuuOkyVdf.e
+
 rule_files:
   - /etc/prometheus/alert.rules
 

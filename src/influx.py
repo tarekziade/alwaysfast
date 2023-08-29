@@ -5,10 +5,10 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 class InfluxDBServer:
     def __init__(self, **options):
-        self.token = options.get("token", os.environ["INFLUXDB_TOKEN"])
-        self.bucket = options["bucket"]
-        self.url = options["url"]
-        self.org = options["org"]
+        self.token = options["INFLUXDB_TOKEN"]
+        self.bucket = options["INFLUXDB_BUCKET"]
+        self.url = options["INFLUXDB_URL"]
+        self.org = options["INFLUXDB_ORG"]
         print(f"Connecting to `{self.url}`")
         self.client = InfluxDBClient(url=self.url, org=self.org, token=self.token)
 
