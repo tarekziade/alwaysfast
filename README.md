@@ -11,6 +11,10 @@ The key differences are:
 - you can run the action from a PR comment to get a diff with `main`
 - the diff is made with the 10 last metrics from main to reduce noise and false positives.
 
+Example of comments in the PR:
+
+![PR](example.png)
+
 Example of usage:
 
 ```yaml
