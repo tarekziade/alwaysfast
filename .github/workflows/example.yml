@@ -21,6 +21,7 @@ jobs:
       - name: Check perf
         uses: ./ # Uses an action in the root directory
         with:
+          github_sha: ${{ github.sha }}
           metrics_file: metrics.json
           influxdb_url: http://ziade.org:8086
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
@@ -43,6 +44,7 @@ jobs:
       - name: Check perf
         uses: ./ # Uses an action in the root directory
         with:
+          github_sha: ${{ github.sha }}
           metrics_file: metrics.json
           head_ref: ${{ steps.comment-branch.outputs.head_ref }}
           influxdb_url: http://ziade.org:8086
