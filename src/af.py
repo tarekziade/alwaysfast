@@ -87,8 +87,6 @@ if __name__ == "__main__":
     repository = os.getenv("GITHUB_REPOSITORY")
     gh_token = os.getenv("GITHUB_TOKEN")
 
-    print(f"Connecting to `{os.getenv('INFLUXDB_URL')}`")
-
     with open(metrics_file) as f:
         measure = json.loads(f.read())
 

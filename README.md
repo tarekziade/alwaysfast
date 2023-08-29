@@ -38,7 +38,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           metrics_file: metrics.json
-          influxdb_url: http://ziade.org:8086
+          influxdb_url: ${{ secrets.INFLUXDB_SERVER }}
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
           influxdb_org: tarek
           influxdb_bucket: benchmarks
@@ -61,7 +61,7 @@ jobs:
         with:
           metrics_file: metrics.json
           head_ref: ${{ steps.comment-branch.outputs.head_ref }}
-          influxdb_url: http://ziade.org:8086
+          influxdb_url: ${{ secrets.INFLUXDB_SERVER }}
           influxdb_token: ${{ secrets.INFLUXDB_TOKEN }}
           influxdb_org: tarek
           influxdb_bucket: benchmarks

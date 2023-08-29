@@ -9,7 +9,6 @@ class InfluxDBServer:
         self.bucket = options["INFLUXDB_BUCKET"]
         self.url = options["INFLUXDB_URL"]
         self.org = options["INFLUXDB_ORG"]
-        print(f"Connecting to `{self.url}`")
         self.client = InfluxDBClient(url=self.url, org=self.org, token=self.token)
 
     def mean(self, branch, benchmark, field):
@@ -33,7 +32,7 @@ class InfluxDBServer:
         return previous[0].records[0].values["_value"]
 
     def send_measure(self, branch, benchmark, sha, measure, check_previous=None):
-        print(f"Sending metrics to {self.url}")
+        print(f"Sending metrics")
         write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
         previous = {}
