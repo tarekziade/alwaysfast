@@ -5,7 +5,7 @@ import statistics
 import base64
 
 
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+from prometheus_client import CollectorRegistry, Gauge, pushadd_to_gateway
 from prometheus_client.exposition import basic_auth_handler, default_handler
 
 
@@ -28,9 +28,10 @@ class PrometheusServer:
         )
 
     def mean(self, branch, benchmark, field):
-        measure_name = self.get_measure_name(branch, benchmark)
-        query = 'avg_over_time(%s{name="%s"}[2d])'
-        query = query % (measure_name, field)
+        name = self.get_measure_name(branch, benchmark)
+
+        query = 'avg_over_time(%s{name="%s",branch="%s"}[2d])'
+        query = query % (name, field, branch)
         try:
             response = requests.get(self.query_root, params={"query": query})
         except Exception:
@@ -44,12 +45,11 @@ class PrometheusServer:
         print(f"Sending metrics to {self.push_url}")
         measure_timestamp = time.time()
         previous = {}
-        measure_name = self.get_measure_name(branch, benchmark)
+
+        name = self.get_measure_name(branch, benchmark)
 
         registry = CollectorRegistry()
-        g = Gauge(
-            measure_name, measure_name, ["name", "branch", "when"], registry=registry
-        )
+        g = Gauge(name, name, ["name", "branch", "when"], registry=registry)
 
         for field, value in measure.items():
             g.labels(name=field, branch=branch, when=measure_timestamp).set(value)
@@ -66,7 +66,7 @@ class PrometheusServer:
         else:
             auth_handler = default_handler
 
-        push_to_gateway(
+        pushadd_to_gateway(
             self.push_url,
             job="dev-push-gateway",
             registry=registry,
@@ -96,4 +96,4 @@ if __name__ == "__main__":
         for _ in range(i):
             print(prom.send_measure("tarek/feature", "speed", measure(), "main"))
 
-    add_more(1)
+    add_more(10)

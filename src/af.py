@@ -75,10 +75,12 @@ if __name__ == "__main__":
         from influx import InfluxDBServer
 
         server = InfluxDBServer(**dict(os.environ))
-    else:
+    elif backend == "prometheus":
         from prom import PrometheusServer
 
         server = PrometheusServer(**dict(os.environ))
+    else:
+        raise NotImplementedError(f"Unknown backend: {backend}")
 
     benchmark = os.getenv("BENCHMARK_NAME", "speeds")
     repository = os.getenv("GITHUB_REPOSITORY")
