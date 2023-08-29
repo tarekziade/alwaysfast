@@ -41,7 +41,7 @@ class PrometheusServer:
         values = [float(r["value"][-1]) for r in res["data"]["result"]]
         return statistics.mean(values)
 
-    def send_measure(self, branch, benchmark, measure, sha, check_previous=None):
+    def send_measure(self, branch, benchmark, sha, measure, check_previous=None):
         print(f"Sending metrics to {self.push_url}")
         measure_timestamp = time.time()
         previous = {}
