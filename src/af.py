@@ -58,7 +58,7 @@ def get_change(current, previous):
     try:
         val = (current - previous) / previous * 100.0
         return f"{val:.2f}"
-    except ZeroDivisionError:
+    except (ZeroDivisionError, TypeError):
         return "?"
 
 
