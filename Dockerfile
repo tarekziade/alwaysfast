@@ -8,4 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./src/af.py" ]
+RUN python /usr/src/app/src/af.py --version
+
+
+CMD [ "python", "/usr/src/app/src/af.py" ]

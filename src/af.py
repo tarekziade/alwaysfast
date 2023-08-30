@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import sys
 
 
 def markdown_table(data, headers):
@@ -61,7 +62,11 @@ def get_change(current, previous):
         return "?"
 
 
-if __name__ == "__main__":
+def main():
+    if sys.argv[-1] == "--version":
+        print("alwaysfast v1")
+        return
+
     metrics_file = os.getenv("METRICS_FILE", "metrics.json")
     main_branch = os.getenv("MAIN_BRANCH", "main")
     current_branch = os.getenv("HEAD_REF", "main")
@@ -115,3 +120,7 @@ if __name__ == "__main__":
 
         comment = "\n".join([line.lstrip() for line in comment.split("\n")])
         comment_pr(comment, repository, pr_number, gh_token)
+
+
+if __name__ == "__main__":
+    main()
