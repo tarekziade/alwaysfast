@@ -88,7 +88,7 @@ if __name__ == "__main__":
     gh_token = os.getenv("GITHUB_TOKEN")
 
     with open(metrics_file) as f:
-        measure = json.loads(f.read())
+        measure = [(e["name"], e["value"]) for e in json.loads(f.read())]
 
     if pr_number == "":
         # metrics for main branch

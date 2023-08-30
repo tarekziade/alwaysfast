@@ -20,15 +20,15 @@ Example of comments in the PR:
 The first step is to generate metrics with your favorite tool.
 The results need to be stored in a JSON file. The structure
 is dead simple: it has to be a list of elements where each element
-is a field name and a numerical value.
+is a mapping with a name and a numerical value.
 
 Example:
 
 ```json
 [
-  ["speed_1", 24.0],
-  ["speed_2", 207.0],
-  ["speed_3", 5.0]
+  { "name": "speed_1", "value": 22.0 },
+  { "name": "speed_2", "value": 210.0 },
+  { "name": "speed_3", "value": 9.0 }
 ]
 ```
 
