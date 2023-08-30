@@ -67,7 +67,7 @@ jobs:
       - name: Run the bench
         run: python demo.py
       - name: Check perf
-        uses: ./ # Uses an action in the root directory
+        uses: tarekziade/alwaysfast@v1
         with:
           metrics_file: metrics.json
           influxdb_url: ${{ secrets.INFLUXDB_SERVER }}
@@ -89,7 +89,7 @@ jobs:
       - name: Run the bench
         run: python demo.py
       - name: Check perf
-        uses: ./ # Uses an action in the root directory
+        uses: tarekziade/alwaysfast@v1
         with:
           metrics_file: metrics.json
           head_ref: ${{ steps.comment-branch.outputs.head_ref }}
