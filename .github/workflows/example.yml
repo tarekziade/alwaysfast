@@ -19,7 +19,7 @@ jobs:
       - name: Run the bench
         run: python demo.py
       - name: Check perf
-        uses: ./ # Uses an action in the root directory
+        uses: tarekziade/alwaysfast@v1
         with:
           github_sha: ${{ github.sha }}
           metrics_file: metrics.json
@@ -42,7 +42,7 @@ jobs:
       - name: Run the bench
         run: python demo.py
       - name: Check perf
-        uses: ./ # Uses an action in the root directory
+        uses: tarekziade/alwaysfast@v1
         with:
           github_sha: ${{ github.sha }}
           metrics_file: metrics.json
